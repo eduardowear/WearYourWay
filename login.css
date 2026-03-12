@@ -1,0 +1,107 @@
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1e1e1e, #3a3a3a);
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            width: 350px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        input,
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+        }
+
+        button {
+            background: #ff3c3c;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #ff0000;
+        }
+
+        .create-account {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .create-account a {
+            color: #ff3c3c;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .create-account a:hover {
+            text-decoration: underline;
+        }
+
+
+
+        .register-box {
+
+            display: none;
+
+            position: fixed;
+            top: 50%;
+            left: 50%;
+
+            transform: translate(-50%, -50%);
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 10px;
+
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+
+            width: 300px;
+
+        }
+
+        .register-box input {
+
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+
+        }
+
+        .register-box button {
+
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+
+        }

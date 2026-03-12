@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Wear Your Way</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+
+<body>
+
+    <div class="login-box">
+
+        <div class="logo">👕 Wear Your Way</div>
+
+        <h2>Iniciar Sesión</h2>
+
+        <input id="user" placeholder="Usuario">
+        <input id="pass" type="password" placeholder="Contraseña">
+
+        <button onclick="login()">Entrar</button>
+
+        <div class="create-account">
+            ¿No tienes cuenta?
+            <a href="#" onclick="openRegister()">Crear usuario</a>
+        </div>
+
+    </div>
+
+    <!-- VENTANA PARA CREAR USUARIO -->
+
+    <div id="registerBox" class="register-box">
+
+        <h3>Crear usuario</h3>
+
+        <input id="newUser" placeholder="Usuario">
+        <input id="newPass" type="password" placeholder="Contraseña">
+
+        <button onclick="createUser()">Crear cuenta</button> <button onclick="closeRegister()">Cancelar</button>
+
+    </div>
+
+    <script src="login.js"></script>
+
+    <script>
+
+        function openRegister() {
+            document.getElementById("registerBox").style.display = "block";
+        }
+
+        function closeRegister() {
+            document.getElementById("registerBox").style.display = "none";
+        }
+
+        async function createUser() {
+
+            let username = document.getElementById("newUser").value;
+            let password = document.getElementById("newPass").value;
+
+            if (username === "" || password === "") {
+                alert("Completa todos los campos");
+                return;
+            }
+
+            let res = await fetch("http://localhost:3000/register", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    username: username,
+                    password: password
+                })
+
+            });
+
+            let data = await res.json();
+
+            alert("Usuario creado correctamente");
+
+            document.getElementById("registerBox").style.display = "none";
+
+        }
+
+    </script>
+
+</body>
+
+</html>

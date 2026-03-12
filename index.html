@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Wear Your Way</title>
+    <link rel="stylesheet" href="styles.css">
+    
+</head>
+
+
+<!-- CARRITO -->
+<div class="cart" id="cart">
+    <div class="cart-content">
+        <h2>Tu carrito</h2>
+        <div id="cart-items"></div>
+        <h3>Total: $<span id="cart-total">0</span> MXN</h3>
+        <button id="close-cart">Cerrar</button>
+        
+    </div>
+</div>
+
+<body>
+
+    <!-- barra de navegacion -->
+    <header>
+    <div class="cart-icon" id="cart-icon">
+    🛒 <span id="cart-count">0</span>
+    </div>
+
+        <div class="logo">👕 Wear Your Way</div>
+        <span id="welcomeUser"></span>
+        <button onclick="logout()">Cerrar sesión</button>
+        <nav>
+            <a href="#inicio">Inicio</a>
+            <a href="diseño.html">Diseñador Online</a>
+            <a href="#playera">Playeras</a>
+            <a href="#">Accesorios</a>
+            <a href="login.html">Contacto</a>
+        </nav>
+    </header>
+    
+
+    <!-- HERO -->
+    <section id="inicio" class="hero">
+    <div class="hero-container">
+
+        <div class="hero-text">
+            <h1>Wear Your Way.<br>Crea a tu manera</h1>
+            <div class="buttons">
+                <button class="btn-primary">Empieza a diseñar</button>
+                <button class="btn-secondary">Ver catálogo</button>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+    <!-- PRODUCTOS -->
+<section id="playera" class="productos">
+    <h2>Productos Destacados</h2>
+
+    <div class="carousel">
+
+      <button class="arrow left">&#10094;</button>
+
+        <div class="cards" id="cards">
+            <div class="card">
+                <img src="img/diseño1.jpeg" alt="Playera urbana">
+                <h3>Abriendo el tercer ojo...</h3>
+                <p>$299 MXN</p>
+            </div>
+
+            <div class="card">
+                <img src="img/diseño2.jpeg" alt="Playera negra clásica">
+                <h3>Mi otra mitad,al estilo Konoha.</h3>
+                <p>$349 MXN</p>
+            </div>
+
+            <div class="card">
+                <img src="img/diseño3.jpeg" alt="Playera edición especial">
+                <h3>Entre lo sagrado y lo profano.</h3>
+                <p>$399 MXN</p>
+            </div>
+
+            <div class="card">
+                <img src="img/diseño4.jpeg" alt="Playera girl">
+                <h3>Girlfriend appreciation.</h3>
+                <p>$350 MXN</p>
+            </div>
+
+            <div class="card">
+                <img src="img/diseño5.jpeg" alt="Playera girl">
+                <h3>.</h3>
+                <p>$350 MXN</p>
+            </div>
+
+            <div class="card">
+                <img src="img/diseño6.jpeg" alt="Playera girl">
+                <h3>Girlfriend appreciation.</h3>
+                <p>$350 MXN</p>
+            </div>
+
+        </div>
+
+       <button class="arrow right">&#10095;</button>
+    </div>
+</section>
+
+<!-- Modelo de tallas del carrusel -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="modal-title"></h2>
+        <p id="modal-price"></p>
+
+        <h3>Tallas disponibles:</h3>
+        <p>S - M - L - XL</p>
+
+        <h3>Detalles:</h3>
+        <p>Playera 100% algodón, estampado premium, edición limitada.</p>
+
+        <button class="btn-primary">Comprar ahora</button>
+    </div>
+</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
