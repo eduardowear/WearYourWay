@@ -15,9 +15,9 @@ const config = {
 async function connectDB() {
     try {
         await sql.connect(config);
-        console.log("Conectado a SQL Server");
+        console.log("✅ Conectado a SQL Server");
     } catch (err) {
-        console.log(err);
+        console.log("❌ Error de conexión:", err);
     }
 }
 

@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
 
 const { sql, connectDB } = require("./db");
@@ -8,12 +7,14 @@ const { sql, connectDB } = require("./db");
 const app = express();
 
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
 
+// Conectar BD
 connectDB();
 
 
-// REGISTRO DE USUARIO
+
+// REGISTER
 
 app.post("/register", async (req, res) => {
 
@@ -21,24 +22,35 @@ app.post("/register", async (req, res) => {
 
     try {
 
-        // 🔐 Encriptar contraseña
+        if (!username || !password) {
+            return res.json({ error: "Campos vacíos" });
+        }
+
+        console.log("📩 Datos recibidos:", username, password);
+
+        //  Encriptar contraseña
         const hashedPassword = await bcrypt.hash(password, 10);
+
+        console.log("🔐 Encriptado:", hashedPassword);
 
         await sql.query`
         INSERT INTO Usuarios (Usuario, Password)
         VALUES (${username}, ${hashedPassword})
         `;
 
-        res.json({ message: "Usuario creado" });
+        console.log("✅ Usuario insertado");
+
+        res.json({ success: true });
 
     } catch (err) {
 
-        console.log(err);
-        res.status(500).json({ error: "Error al registrar usuario" });
+        console.log("❌ ERROR REGISTER:", err);
+        res.status(500).json({ success: false });
 
     }
 
 });
+
 
 // LOGIN
 
@@ -57,7 +69,7 @@ app.post("/login", async (req, res) => {
 
             const user = result.recordset[0];
 
-            // 🔐 Comparar contraseña
+            // Comparar contraseña
             const match = await bcrypt.compare(password, user.Password);
 
             if (match) {
@@ -81,16 +93,17 @@ app.post("/login", async (req, res) => {
 
     } catch (err) {
 
-        console.log(err);
-        res.status(500).json({ error: "Error en el login" });
+        console.log("❌ ERROR LOGIN:", err);
+        res.status(500).json({ success: false });
 
     }
 
 });
 
 
+// =======================
+// SERVIDOR
+// =======================
 app.listen(3000, () => {
-
-    console.log("Servidor corriendo en puerto 3000");
-
+    console.log("🚀 Servidor en http://localhost:3000");
 });
