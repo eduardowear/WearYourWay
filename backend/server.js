@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const bcrypt = require("bcrypt");
 
 const { sql, connectDB } = require("./db");
 
@@ -20,21 +21,24 @@ app.post("/register", async (req, res) => {
 
     try {
 
+        // 🔐 Encriptar contraseña
+        const hashedPassword = await bcrypt.hash(password, 10);
+
         await sql.query`
-INSERT INTO Usuarios (Usuario,Password)
-VALUES (${username},${password})
-`;
+        INSERT INTO Usuarios (Usuario, Password)
+        VALUES (${username}, ${hashedPassword})
+        `;
 
         res.json({ message: "Usuario creado" });
 
     } catch (err) {
 
-        res.status(500).json(err);
+        console.log(err);
+        res.status(500).json({ error: "Error al registrar usuario" });
 
     }
 
 });
-
 
 // LOGIN
 
@@ -45,33 +49,44 @@ app.post("/login", async (req, res) => {
     try {
 
         const result = await sql.query`
-SELECT * FROM Usuarios
-WHERE Usuario=${username} AND Password=${password}
-`;
+        SELECT * FROM Usuarios
+        WHERE Usuario = ${username}
+        `;
 
         if (result.recordset.length > 0) {
 
-            res.json({
-                success: true,
-                user: username
-            });
+            const user = result.recordset[0];
+
+            // 🔐 Comparar contraseña
+            const match = await bcrypt.compare(password, user.Password);
+
+            if (match) {
+
+                res.json({
+                    success: true,
+                    user: username
+                });
+
+            } else {
+
+                res.json({ success: false });
+
+            }
 
         } else {
 
-            res.json({
-                success: false
-            });
+            res.json({ success: false });
 
         }
 
     } catch (err) {
 
-        res.status(500).json(err);
+        console.log(err);
+        res.status(500).json({ error: "Error en el login" });
 
     }
 
 });
-
 
 
 app.listen(3000, () => {
