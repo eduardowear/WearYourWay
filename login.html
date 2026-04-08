@@ -1,23 +1,22 @@
 <!DOCTYPE html>
-
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Wear Your Way</title>
     <link rel="stylesheet" href="login.css">
 </head>
 
 <body>
 
+    <!-- LOGIN -->
     <div class="login-box">
 
         <div class="logo">👕 Wear Your Way</div>
 
         <h2>Iniciar Sesión</h2>
 
-        <input id="user" placeholder="Usuario">
+        <input id="correo" placeholder="Correo electrónico">
         <input id="pass" type="password" placeholder="Contraseña">
 
         <button onclick="login()">Entrar</button>
@@ -29,16 +28,31 @@
 
     </div>
 
-    <!-- VENTANA PARA CREAR USUARIO -->
-
+    <!-- REGISTER -->
     <div id="registerBox" class="register-box">
 
-        <h3>Crear usuario</h3>
+        <h3>Crear cuenta</h3>
 
-        <input id="newUser" placeholder="Usuario">
+        <input id="nombre" placeholder="Nombre completo">
+        <input id="correoReg" placeholder="Correo electrónico">
+        <input id="telefono" placeholder="Teléfono">
+        <input id="fecha" type="date">
+
         <input id="newPass" type="password" placeholder="Contraseña">
 
-        <button onclick="createUser()">Crear cuenta</button> <button onclick="closeRegister()">Cancelar</button>
+        <!-- VALIDACIÓN VISUAL -->
+        <div class="password-rules">
+            <p>La contraseña debe tener:</p>
+            <div id="rule-length" class="rule">❌ 12+ caracteres</div>
+            <div id="rule-upper" class="rule">❌ Una Mayúscula</div>
+            <div id="rule-lower" class="rule">❌ Una Minúscula</div>
+            <div id="rule-symbol" class="rule">❌ Un símbolo (!@#$%^&*)</div>
+        </div>
+
+        <input id="confirmPass" type="password" placeholder="Confirmar contraseña">
+
+        <button onclick="createUser()">Crear cuenta</button>
+        <button onclick="closeRegister()">Cancelar</button>
 
     </div>
 
@@ -54,37 +68,88 @@
             document.getElementById("registerBox").style.display = "none";
         }
 
+        // VALIDACIÓN EN TIEMPO REAL
+        const passwordInput = document.getElementById("newPass");
+
+        passwordInput.addEventListener("input", function () {
+
+            const value = passwordInput.value;
+
+            const hasLength = value.length >= 12;
+            const hasUpper = /[A-Z]/.test(value);
+            const hasLower = /[a-z]/.test(value);
+            const hasSymbol = /[\W_]/.test(value);
+
+            updateRule("rule-length", hasLength);
+            updateRule("rule-upper", hasUpper);
+            updateRule("rule-lower", hasLower);
+            updateRule("rule-symbol", hasSymbol);
+
+        });
+
+        function updateRule(id, valid) {
+
+            const element = document.getElementById(id);
+
+            if (valid) {
+                element.innerHTML = "✅ " + element.innerText.substring(2);
+                element.style.color = "green";
+            } else {
+                element.innerHTML = "❌ " + element.innerText.substring(2);
+                element.style.color = "red";
+            }
+        }
+
+        // REGISTRO
         async function createUser() {
 
-            let username = document.getElementById("newUser").value;
+            let nombre = document.getElementById("nombre").value;
+            let correo = document.getElementById("correoReg").value;
+            let telefono = document.getElementById("telefono").value;
+            let fecha = document.getElementById("fecha").value;
             let password = document.getElementById("newPass").value;
+            let confirm = document.getElementById("confirmPass").value;
 
-            if (username === "" || password === "") {
+            if (!nombre || !correo || !telefono || !fecha || !password || !confirm) {
                 alert("Completa todos los campos");
                 return;
             }
 
+            if (password !== confirm) {
+                alert("Las contraseñas no coinciden");
+                return;
+            }
+
+            // VALIDACIÓN FINAL
+            const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_]).{12,}$/;
+
+            if (!regex.test(password)) {
+                alert("La contraseña no cumple los requisitos");
+                return;
+            }
+
             let res = await fetch("http://localhost:3000/register", {
-
                 method: "POST",
-
                 headers: {
                     "Content-Type": "application/json"
                 },
-
                 body: JSON.stringify({
-                    username: username,
-                    password: password
+                    nombre,
+                    correo,
+                    telefono,
+                    fechaNacimiento: fecha,
+                    password
                 })
-
             });
 
             let data = await res.json();
 
-            alert("Usuario creado correctamente");
-
-            document.getElementById("registerBox").style.display = "none";
-
+            if (data.success) {
+                alert("Usuario creado correctamente");
+                closeRegister();
+            } else {
+                alert("Error al crear usuario");
+            }
         }
 
     </script>

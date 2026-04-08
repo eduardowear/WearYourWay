@@ -105,3 +105,13 @@
             padding: 10px;
 
         }
+
+        .password-rules {
+             font-size: 13px;
+             margin-bottom: 10px;
+        }
+
+        .rule {
+             margin: 3px 0;
+             color: red;
+        }

@@ -1,6 +1,6 @@
 async function login() {
 
-    let username = document.getElementById("user").value;
+    let correo = document.getElementById("correo").value;
     let password = document.getElementById("pass").value;
 
     let res = await fetch("http://localhost:3000/login", {
@@ -11,7 +11,7 @@ async function login() {
         },
 
         body: JSON.stringify({
-            username: username,
+            correo: correo,
             password: password
         })
 
@@ -26,7 +26,7 @@ async function login() {
 
     } else {
 
-        alert("Usuario o contraseña incorrectos");
+        alert("Correo o contraseña incorrectos");
 
     }
 
