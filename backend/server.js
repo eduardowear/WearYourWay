@@ -9,36 +9,26 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Conectar BD
 connectDB();
 
 
-
 // REGISTER
-
 app.post("/register", async (req, res) => {
 
-    const { username, password } = req.body;
+    const { nombre, correo, telefono, fechaNacimiento, password } = req.body;
 
     try {
 
-        if (!username || !password) {
-            return res.json({ error: "Campos vacíos" });
+        if (!nombre || !correo || !telefono || !fechaNacimiento || !password) {
+            return res.json({ success: false, error: "Campos vacíos" });
         }
 
-        console.log("📩 Datos recibidos:", username, password);
-
-        //  Encriptar contraseña
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        console.log("🔐 Encriptado:", hashedPassword);
-
         await sql.query`
-        INSERT INTO Usuarios (Usuario, Password)
-        VALUES (${username}, ${hashedPassword})
+        INSERT INTO Usuarios (Nombre, Correo, Telefono, FechaNacimiento, Password)
+        VALUES (${nombre}, ${correo}, ${telefono}, ${fechaNacimiento}, ${hashedPassword})
         `;
-
-        console.log("✅ Usuario insertado");
 
         res.json({ success: true });
 
@@ -53,42 +43,36 @@ app.post("/register", async (req, res) => {
 
 
 // LOGIN
-
 app.post("/login", async (req, res) => {
 
-    const { username, password } = req.body;
+    const { correo, password } = req.body;
 
     try {
 
         const result = await sql.query`
         SELECT * FROM Usuarios
-        WHERE Usuario = ${username}
+        WHERE Correo = ${correo}
         `;
 
         if (result.recordset.length > 0) {
 
             const user = result.recordset[0];
 
-            // Comparar contraseña
             const match = await bcrypt.compare(password, user.Password);
 
             if (match) {
 
                 res.json({
                     success: true,
-                    user: username
+                    user: user.Nombre
                 });
 
             } else {
-
                 res.json({ success: false });
-
             }
 
         } else {
-
             res.json({ success: false });
-
         }
 
     } catch (err) {
@@ -101,9 +85,6 @@ app.post("/login", async (req, res) => {
 });
 
 
-// =======================
-// SERVIDOR
-// =======================
 app.listen(3000, () => {
     console.log("🚀 Servidor en http://localhost:3000");
 });
