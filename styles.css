@@ -185,6 +185,62 @@ header nav a {
     to { transform: scale(1); opacity: 1; }
 }
 
+.modal-content {
+    background: linear-gradient(135deg, #ffffff, #f9f9f9);
+    padding: 30px;
+    width: 420px;
+    border-radius: 15px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    animation: aparecer 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+}
+
+.modal-content h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.modal-content p {
+    font-size: 16px;
+    margin: 8px 0;
+    color: #555;
+}
+
+.modal-content .price {
+    font-size: 20px;
+    font-weight: bold;
+    color: #00bfff;
+    margin: 15px 0;
+}
+
+.modal-content .details {
+    font-size: 14px;
+    color: #666;
+    margin-top: 10px;
+    line-height: 1.4;
+}
+
+.modal-content .btn-primary {
+    background: #00bfff;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 25px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.modal-content .btn-primary:hover {
+    background: #0099cc;
+    transform: scale(1.05);
+}
+
+
+
 /* ICONO CARRITO */
 .cart-icon {
     cursor: pointer;
@@ -199,25 +255,77 @@ header nav a {
     font-size: 12px;
 }
 
-/* PANEL CARRITO */
 .cart {
     position: fixed;
     right: -400px;
     top: 0;
-    width: 200px;
+    width: 300px;   /* tamaño equilibrado */
     height: 100%;
-    background: white;
-    box-shadow: -3px 0 10px rgba(0,0,0,0.2);
+    background: #fff;
+    box-shadow: -3px 0 15px rgba(0,0,0,0.25);
     transition: 0.3s;
     padding: 20px;
+    border-radius: 10px 0 0 10px;
 }
 
 .cart.active {
     right: 0;
 }
 
-.cart-content {
+.cart h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+    color: #333;
+}
+
+/* Cada producto */
+
+.cart-item {
     display: flex;
-    flex-direction: column;
-    gap: 15px;
+    justify-content: space-between;
+    align-items: center;
+    background: #f7f7f7;
+    padding: 6px 10px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    font-size: 17px;
+}
+
+/* Botón de papelera */
+.cart-item button {
+    background: transparent;   /* sin fondo  */
+    border: none;
+    cursor: pointer;
+    font-size: 15px;           /* tamaño pequeño y elegante */
+    color: #888;               /* gris discreto */
+    transition: 0.3s;
+    margin-left: 15px;
+}
+
+.cart-item button:hover {
+    color: red;                /* se pone rojo al pasar el mouse */
+    transform: scale(1.1);
+}
+
+/* Botones generales */
+.cart button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.cart .clear-btn {
+    background: #ff3c3c;
+    color: white;
+}
+
+.cart .purchase-btn {
+    background: green;
+    color: white;
 }
