@@ -8,167 +8,68 @@
 </head>
 
 <body>
-
-    <!-- LOGIN -->
     <div class="login-box">
+        <div class="logo">Wear Your Way</div>
+        <h2>Iniciar Sesion</h2>
 
-        <div class="logo">👕 Wear Your Way</div>
-
-        <h2>Iniciar Sesión</h2>
-
-        <input id="correo" placeholder="Correo electrónico">
-        <input id="pass" type="password" placeholder="Contraseña">
-
+        <input type="text" id="correo" placeholder="Correo o usuario">
+        <input type="password" id="pass" placeholder="Contrasena">
         <button onclick="login()">Entrar</button>
+        <p id="errorMsg"></p>
 
         <div class="create-account">
-            ¿No tienes cuenta?
-            <a href="#" onclick="openRegister()">Crear usuario</a>
+            No tienes cuenta? <a href="#" onclick="mostrarRegistro()">Crear usuario</a>
         </div>
-
     </div>
 
-
-    <!-- Registro -->
-<div class="register-box">
-  <h2>Crear Cuenta</h2>
-  <input type="text" id="nombre" placeholder="Nombre completo">
-  <input type="email" id="correoRegistro" placeholder="Correo electrónico">
-  <input type="password" id="passRegistro" placeholder="Contraseña">
-  <input type="password" id="confirmPass" placeholder="Confirmar contraseña">
-  <p id="errorMsgRegistro" style="color:red; text-align:center;"></p>
-  <button onclick="register()">Crear cuenta</button>
-  <button class="cancel-btn">Cancelar</button>
-</div>
-
-    <!-- REGISTER -->
     <div id="registerBox" class="register-box">
-
         <h3>Crear cuenta</h3>
 
         <input id="nombre" placeholder="Nombre completo">
-        <input id="correoReg" placeholder="Correo electrónico">
-        <input id="telefono" placeholder="Teléfono">
+        <input id="correoReg" placeholder="Correo electronico">
+        <input id="telefono" placeholder="Telefono">
         <input id="fecha" type="date">
+        <input id="newPass" type="password" placeholder="Contrasena">
 
-        <input id="newPass" type="password" placeholder="Contraseña">
-
-        <!-- VALIDACIÓN VISUAL -->
         <div class="password-rules">
-            <p>La contraseña debe tener:</p>
-            <div id="rule-length" class="rule">❌ 12+ caracteres</div>
-            <div id="rule-upper" class="rule">❌ Una Mayúscula</div>
-            <div id="rule-lower" class="rule">❌ Una Minúscula</div>
-            <div id="rule-symbol" class="rule">❌ Un símbolo (!@#$%^&*)</div>
+            <p>La contrasena debe tener:</p>
+            <div id="rule-length" class="rule">X 12+ caracteres</div>
+            <div id="rule-upper" class="rule">X Una mayuscula</div>
+            <div id="rule-lower" class="rule">X Una minuscula</div>
+            <div id="rule-symbol" class="rule">X Un simbolo (!@#$%^&*)</div>
         </div>
 
-        <input id="confirmPass" type="password" placeholder="Confirmar contraseña">
+        <input id="confirmPass" type="password" placeholder="Confirmar contrasena">
 
-        <button onclick="createUser()">Crear cuenta</button>
+        <button onclick="register()">Crear cuenta</button>
         <button onclick="closeRegister()">Cancelar</button>
-
     </div>
 
     <script src="login.js"></script>
-
     <script>
-
-        function openRegister() {
-            document.getElementById("registerBox").style.display = "block";
-        }
-
         function closeRegister() {
             document.getElementById("registerBox").style.display = "none";
         }
 
-        // VALIDACIÓN EN TIEMPO REAL
         const passwordInput = document.getElementById("newPass");
 
         passwordInput.addEventListener("input", function () {
-
             const value = passwordInput.value;
 
-            const hasLength = value.length >= 12;
-            const hasUpper = /[A-Z]/.test(value);
-            const hasLower = /[a-z]/.test(value);
-            const hasSymbol = /[\W_]/.test(value);
-
-            updateRule("rule-length", hasLength);
-            updateRule("rule-upper", hasUpper);
-            updateRule("rule-lower", hasLower);
-            updateRule("rule-symbol", hasSymbol);
-
+            updateRule("rule-length", value.length >= 12);
+            updateRule("rule-upper", /[A-Z]/.test(value));
+            updateRule("rule-lower", /[a-z]/.test(value));
+            updateRule("rule-symbol", /[\W_]/.test(value));
         });
 
         function updateRule(id, valid) {
-
             const element = document.getElementById(id);
+            const text = element.innerText.slice(2);
 
-            if (valid) {
-                element.innerHTML = "✅ " + element.innerText.substring(2);
-                element.style.color = "green";
-            } else {
-                element.innerHTML = "❌ " + element.innerText.substring(2);
-                element.style.color = "red";
-            }
+            element.innerText = (valid ? "OK" : "X ") + text;
+            element.style.color = valid ? "green" : "red";
         }
-
-        // REGISTRO
-        async function createUser() {
-
-            let nombre = document.getElementById("nombre").value;
-            let correo = document.getElementById("correoReg").value;
-            let telefono = document.getElementById("telefono").value;
-            let fecha = document.getElementById("fecha").value;
-            let password = document.getElementById("newPass").value;
-            let confirm = document.getElementById("confirmPass").value;
-
-            if (!nombre || !correo || !telefono || !fecha || !password || !confirm) {
-                alert("Completa todos los campos");
-                return;
-            }
-
-            if (password !== confirm) {
-                alert("Las contraseñas no coinciden");
-                return;
-            }
-
-            // VALIDACIÓN FINAL
-            const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_]).{12,}$/;
-
-            if (!regex.test(password)) {
-                alert("La contraseña no cumple los requisitos");
-                return;
-            }
-
-            let res = await fetch("http://localhost:3000/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    nombre,
-                    correo,
-                    telefono,
-                    fechaNacimiento: fecha,
-                    password
-                })
-            });
-
-            let data = await res.json();
-
-            if (data.success) {
-                alert("Usuario creado correctamente");
-                closeRegister();
-            } else {
-                alert("Error al crear usuario");
-            }
-        }
-
     </script>
-
 </body>
 
 </html>
-
-
