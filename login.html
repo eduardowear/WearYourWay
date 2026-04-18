@@ -18,11 +18,12 @@
         <p id="errorMsg"></p>
 
         <div class="create-account">
-            No tienes cuenta? <a href="#" onclick="mostrarRegistro()">Crear usuario</a>
+            No tienes cuenta?
+            <a href="javascript:void(0)" onclick="mostrarRegistro()">Crear usuario</a>
         </div>
     </div>
 
-    <div id="registerBox" class="register-box">
+    <div id="registerBox" class="register-box" style="display: none;">
         <h3>Crear cuenta</h3>
 
         <input id="nombre" placeholder="Nombre completo">
@@ -45,12 +46,17 @@
         <button onclick="closeRegister()">Cancelar</button>
     </div>
 
-    <script src="login.js"></script>
     <script>
+        // MOSTRAR / OCULTAR REGISTRO
+        function mostrarRegistro() {
+            document.getElementById("registerBox").style.display = "block";
+        }
+
         function closeRegister() {
             document.getElementById("registerBox").style.display = "none";
         }
 
+        // VALIDACION VISUAL CONTRASEÑA
         const passwordInput = document.getElementById("newPass");
 
         passwordInput.addEventListener("input", function () {
@@ -66,10 +72,105 @@
             const element = document.getElementById(id);
             const text = element.innerText.slice(2);
 
-            element.innerText = (valid ? "OK" : "X ") + text;
+            element.innerText = (valid ? "✔ " : "X ") + text;
             element.style.color = valid ? "green" : "red";
         }
-    </script>
-</body>
 
+        // VALIDAR CONTRASEÑA
+        function validarPassword(pass) {
+            return pass.length >= 12 &&
+                /[A-Z]/.test(pass) &&
+                /[a-z]/.test(pass) &&
+                /[\W_]/.test(pass);
+        }
+
+        // REGISTER
+        function register() {
+            const nombre = document.getElementById("nombre").value;
+            const correo = document.getElementById("correoReg").value;
+            const telefono = document.getElementById("telefono").value;
+            const fechaNacimiento = document.getElementById("fecha").value;
+            const password = document.getElementById("newPass").value;
+            const confirmPass = document.getElementById("confirmPass").value;
+
+            if (!nombre || !correo || !telefono || !fechaNacimiento || !password || !confirmPass) {
+                alert("Llena todos los campos");
+                return;
+            }
+
+            if (!validarPassword(password)) {
+                alert("La contraseña no cumple los requisitos");
+                return;
+            }
+
+            if (password !== confirmPass) {
+                alert("Las contraseñas no coinciden");
+                return;
+            }
+
+            fetch("http://localhost:3000/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    nombre,
+                    correo,
+                    telefono,
+                    fechaNacimiento,
+                    password
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Cuenta creada correctamente");
+                    closeRegister();
+                } else {
+                    alert(data.error);
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                alert("Error de conexión");
+            });
+        }
+
+        // LOGIN
+        function login() {
+            const correo = document.getElementById("correo").value;
+            const password = document.getElementById("pass").value;
+
+            fetch("http://localhost:3000/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    correo,
+                    password
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+
+                    // GUARDAR USUARIO
+                    localStorage.setItem("usuario", data.user);
+
+                    // REDIRIGIR
+                    window.location.href = "index.html";
+
+                } else {
+                    document.getElementById("errorMsg").innerText = data.error;
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                alert("Error de conexión");
+            });
+        }
+    </script>
+
+</body>
 </html>
