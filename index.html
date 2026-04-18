@@ -26,7 +26,7 @@
 
         <div class="logo">👕 Wear Your Way</div>
 
-        <!-- 👤 USUARIO -->
+        <!-- USUARIO -->
         <span id="welcomeUser"></span>
 
         <nav>
@@ -35,7 +35,7 @@
             <a href="#playera">Playeras</a>
             <a href="#">Accesorios</a>
 
-            <!-- 🔄 DINÁMICO -->
+            
             <a href="login.html" id="navSesion">Iniciar Sesión</a>
         </nav>
     </header>
@@ -109,19 +109,19 @@
 
     <script src="script.js"></script>
 
-    <!-- 🔥 SCRIPT DE SESIÓN -->
+    <!-- SCRIPT DE SESIÓN -->
     <script>
         const usuario = localStorage.getItem("usuario");
         const navSesion = document.getElementById("navSesion");
         const welcomeUser = document.getElementById("welcomeUser");
 
         if (!usuario) {
-            // 🔴 NO LOGUEADO
+            // NO LOGUEADO
             navSesion.innerText = "Iniciar Sesión";
             navSesion.href = "login.html";
             welcomeUser.innerText = "";
         } else {
-            // 🟢 LOGUEADO
+            // LOGUEADO
             welcomeUser.innerText = "👤 " + usuario;
 
             navSesion.innerText = "Cerrar sesión";
@@ -132,11 +132,11 @@
             };
         }
 
-        // 🔴 LOGOUT
+        
         function logout() {
             localStorage.removeItem("usuario");
 
-            // 🔥 LIMPIAR NOMBRE EN PANTALLA
+            // LIMPIAR NOMBRE EN PANTALLA
             welcomeUser.innerText = "";
 
             window.location.href = "index.html";
