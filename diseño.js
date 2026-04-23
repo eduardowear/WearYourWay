@@ -4,180 +4,149 @@ const shirtColorLayer = document.getElementById("shirtColorLayer");
 
 let selectedElement = null;
 
-
-// CAMBIAR COLOR PLAYERA
+// funcion para que el coor blanco y negro no cubra por completo la imagen 
 function changeShirtColor(color) {
-    shirtColorLayer.style.background = color;
+
+    if (color === "white") {
+        shirtColorLayer.style.background = "white";
+        shirtColorLayer.style.mixBlendMode = "normal";
+        shirtColorLayer.style.opacity = "0";
+    }
+    else if (color === "black") {
+        shirtColorLayer.style.background = "black";
+        shirtColorLayer.style.mixBlendMode = "normal";
+        shirtColorLayer.style.opacity = "0.8";
+    }
+    else {
+        shirtColorLayer.style.background = color;
+        shirtColorLayer.style.mixBlendMode = "multiply";
+        shirtColorLayer.style.opacity = "0.75";
+    }
 }
 
-
-// AGREGAR TEXTO
+// TEXTO
 function addText() {
-
     const value = document.getElementById("textInput").value;
-    if (value.trim() === "") return;
+    if (!value.trim()) return;
 
     const box = document.createElement("div");
     box.classList.add("design-element");
-
-    box.style.top = "40px";
-    box.style.left = "40px";
+    box.style.top = "50px";
+    box.style.left = "50px";
     box.style.width = "150px";
     box.style.height = "60px";
 
     const text = document.createElement("div");
-
     text.innerText = value;
+    text.style.width = "100%";
+    text.style.height = "100%";
+    text.style.display = "flex";
+    text.style.alignItems = "center";
+    text.style.justifyContent = "center";
     text.style.fontSize = "30px";
     text.style.fontFamily = document.getElementById("fontFamily").value;
     text.style.color = document.getElementById("textColor").value;
-    text.style.transformOrigin = "top left";
+    text.style.pointerEvents = "none";
 
     box.appendChild(text);
-
     designArea.appendChild(box);
-
     addEvents(box);
 
-
-    // ESCALAR TEXTO CUANDO CAMBIE TAMAÑO
-    const observer = new ResizeObserver(entries => {
-
-        for (let entry of entries) {
-
-            let scale = entry.contentRect.width / 150;
-
-            text.style.transform = "scale(" + scale + ")";
-
-        }
-
+    box.addEventListener("dblclick", () => {
+        const nuevo = prompt("Editar texto:", text.innerText);
+        if (nuevo !== null) text.innerText = nuevo;
     });
 
-    observer.observe(box);
-
+    document.getElementById("textInput").value = "";
 }
 
-
-// SUBIR IMAGEN
+// IMAGEN
 imageUpload.addEventListener("change", function () {
-
     const file = this.files[0];
     if (!file) return;
 
     const reader = new FileReader();
-
-    reader.onload = function (e) {
-
+    reader.onload = e => {
         const box = document.createElement("div");
-
         box.classList.add("design-element");
-
-        box.style.top = "50px";
-        box.style.left = "50px";
+        box.style.top = "60px";
+        box.style.left = "60px";
         box.style.width = "120px";
 
         const img = document.createElement("img");
-
         img.src = e.target.result;
         img.style.width = "100%";
 
         box.appendChild(img);
-
-        addEvents(box);
-
         designArea.appendChild(box);
-
+        addEvents(box);
     };
-
     reader.readAsDataURL(file);
-
 });
 
-
-// OBSERVAR CAMBIO DE TAMAÑO PARA ESCALAR TEXTO
-function observeResize(box, text) {
-
-    const resizeObserver = new ResizeObserver(entries => {
-
-        for (let entry of entries) {
-
-            let newSize = entry.contentRect.width / 6;
-
-            text.style.fontSize = newSize + "px";
-
-        }
-
-    });
-
-    resizeObserver.observe(box);
-
-}
-
-
-// MOVER ELEMENTOS
+// funcion para que puedas mover el texto o imagen donde tu quieras
 function addEvents(element) {
 
-    element.addEventListener("click", function (e) {
-
+    element.addEventListener("click", e => {
         e.stopPropagation();
 
         if (selectedElement) selectedElement.classList.remove("selected");
-
         selectedElement = element;
-
         element.classList.add("selected");
 
+        element.style.zIndex = Date.now();
     });
 
     let offsetX, offsetY;
 
-    element.addEventListener("mousedown", function (e) {
+    element.addEventListener("pointerdown", e => {
 
-        offsetX = e.clientX - element.offsetLeft;
-        offsetY = e.clientY - element.offsetTop;
+        const rect = element.getBoundingClientRect();
+        offsetX = e.clientX - rect.left;
+        offsetY = e.clientY - rect.top;
 
         function move(e) {
+            let x = e.clientX - offsetX;
+            let y = e.clientY - offsetY;
 
-            element.style.left = (e.clientX - offsetX) + "px";
-            element.style.top = (e.clientY - offsetY) + "px";
-
+            element.style.left = x + "px";
+            element.style.top = y + "px";
         }
 
         function stop() {
-
-            document.removeEventListener("mousemove", move);
-            document.removeEventListener("mouseup", stop);
-
+            document.removeEventListener("pointermove", move);
+            document.removeEventListener("pointerup", stop);
         }
 
-        document.addEventListener("mousemove", move);
-        document.addEventListener("mouseup", stop);
-
+        document.addEventListener("pointermove", move);
+        document.addEventListener("pointerup", stop);
     });
-
 }
 
-
 // DESELECCIONAR
-document.addEventListener("click", function () {
-
+document.addEventListener("click", () => {
     if (selectedElement) selectedElement.classList.remove("selected");
-
     selectedElement = null;
-
 });
-
 
 // ELIMINAR
 function deleteSelected() {
-
-    if (selectedElement) {
-
-        selectedElement.remove();
-
-        selectedElement = null;
-
-    }
-
+    if (selectedElement) selectedElement.remove();
+    selectedElement = null;
 }
 
+// GUARDAR
+function guardarDiseno() {
+    const shirt = document.getElementById("shirt");
+
+    html2canvas(shirt, {
+        useCORS: true,
+        backgroundColor: "#ffffff",
+        scale: 2
+    }).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "mi-diseno-wearyourway.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+    });
+}

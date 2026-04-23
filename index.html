@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Wear Your Way</title>
@@ -35,7 +36,7 @@
             <a href="#playera">Playeras</a>
             <a href="#">Accesorios</a>
 
-            
+
             <a href="login.html" id="navSesion">Iniciar Sesión</a>
         </nav>
     </header>
@@ -90,6 +91,37 @@
         </div>
     </section>
 
+    <!-- MÁS PRODUCTOS (NUEVO) -->
+    <section class="more-products">
+        <h2>Más productos</h2>
+
+        <div class="extra-cards">
+            <div class="card">
+                <img src="img/diseño5.jpeg">
+                <h3>El arte de un samurai</h3>
+                <p>$280 MXN</p>
+            </div>
+
+            <div class="card">
+                <img src="img/diseño6.jpeg">
+                <h3>Akaza llega </h3>
+                <p>$310 MXN</p>
+            </div>
+
+            <div class="card">
+                <img src="img/goku.jpg">
+                <h3>Diseño super saiyajin</h3>
+                <p>$330 MXN</p>
+            </div>
+
+            <div class="card">
+                <img src="img/temerario.png">
+                <h3>perrito temerario </h3>
+                <p>$290 MXN</p>
+            </div>
+        </div>
+    </section>
+
     <!-- MODAL -->
     <div class="modal" id="modal">
         <div class="modal-content">
@@ -132,16 +164,23 @@
             };
         }
 
-        
+
         function logout() {
             localStorage.removeItem("usuario");
 
-            // LIMPIAR NOMBRE EN PANTALLA
+            // limpia tu nombre de la pantalla
             welcomeUser.innerText = "";
 
             window.location.href = "index.html";
         }
     </script>
 
+    <footer class="footer">
+        <p>© 2026 Wear Your Way</p>
+        <p>Diseña tu estilo. Viste tu identidad.</p>
+    </footer>
+
+
 </body>
+
 </html>

@@ -329,3 +329,25 @@ header nav a {
     background: green;
     color: white;
 }
+
+/* NUEVOS PRODUCTOS */
+.more-products {
+    padding: 40px;
+    text-align: center;
+}
+
+.extra-cards {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* FOOTER */
+.footer {
+    background: black;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+}
