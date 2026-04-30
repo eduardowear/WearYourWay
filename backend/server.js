@@ -11,11 +11,8 @@ app.use(express.json());
 
 connectDB();
 
-
 // REGISTER
 app.post("/register", async (req, res) => {
-
-    
 
     const { nombre, correo, telefono, fechaNacimiento, password } = req.body;
 
@@ -25,7 +22,6 @@ app.post("/register", async (req, res) => {
             return res.json({ success: false, error: "Campos vacíos" });
         }
 
-        //  ESTO VALIDA SI YA EXISTE
         const existe = await sql.query`
             SELECT * FROM Usuarios WHERE Correo = ${correo}
         `;
@@ -34,23 +30,20 @@ app.post("/register", async (req, res) => {
             return res.json({ success: false, error: "El correo ya existe" });
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hash = await bcrypt.hash(password, 10);
 
         await sql.query`
             INSERT INTO Usuarios (Nombre, Correo, Telefono, FechaNacimiento, Password)
-            VALUES (${nombre}, ${correo}, ${telefono}, ${fechaNacimiento}, ${hashedPassword})
+            VALUES (${nombre}, ${correo}, ${telefono}, ${fechaNacimiento}, ${hash})
         `;
-
-       
 
         res.json({ success: true });
 
     } catch (err) {
-        console.log("❌ ERROR REGISTER:", err);
-        res.json({ success: false, error: "Error en servidor" });
+        console.log("❌ REGISTER:", err);
+        res.json({ success: false, error: "Error servidor" });
     }
 });
-
 
 // LOGIN
 app.post("/login", async (req, res) => {
@@ -69,23 +62,25 @@ app.post("/login", async (req, res) => {
 
         const user = result.recordset[0];
 
-        const match = await bcrypt.compare(password, user.Password);
+        const valid = await bcrypt.compare(password, user.Password);
 
-        if (!match) {
+        if (!valid) {
             return res.json({ success: false, error: "Contraseña incorrecta" });
         }
 
         res.json({
             success: true,
-            user: user.Nombre
+            user: {
+                nombre: user.Nombre,
+                correo: user.Correo
+            }
         });
 
     } catch (err) {
-        console.log("❌ ERROR LOGIN:", err);
-        res.json({ success: false, error: "Error en servidor" });
+        console.log("❌ LOGIN:", err);
+        res.json({ success: false, error: "Error servidor" });
     }
 });
-
 
 app.listen(3000, () => {
     console.log("🚀 Servidor en http://localhost:3000");
