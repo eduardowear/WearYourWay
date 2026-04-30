@@ -4,7 +4,7 @@ const config = {
     user: "sa",
     password: "1234",
     server: "DESKTOP-U1I9D6A",
-    database: "wearyourway",
+    database: "WearYourWay",
     port: 1433,
     options: {
         encrypt: false,
@@ -17,7 +17,7 @@ async function connectDB() {
         await sql.connect(config);
         console.log("✅ Conectado a SQL Server");
     } catch (err) {
-        console.log("❌ Error de conexión:", err);
+        console.log("❌ Error:", err);
     }
 }
 
