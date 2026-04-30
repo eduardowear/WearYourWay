@@ -1,44 +1,121 @@
-async function login() {
-    let correo = document.getElementById("correo").value;
-    let password = document.getElementById("pass").value;
+// MOSTRAR / OCULTAR REGISTRO
+function mostrarRegistro() {
+    document.getElementById("registerBox").style.display = "block";
+}
 
-    let res = await fetch("http://localhost:3000/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ correo, password })
-    });
+function closeRegister() {
+    document.getElementById("registerBox").style.display = "none";
+}
 
-    let data = await res.json();
+//  Validacion de contraseña
+const passwordInput = document.getElementById("newPass");
 
-    const loginBox = document.querySelector(".login-box");
+passwordInput.addEventListener("input", function () {
 
-    if (data.success) {
-        localStorage.setItem("loggedUser", data.user);
-        window.location.href = "index.html";
-    } else {
-        loginBox.classList.add("error");
-        setTimeout(() => loginBox.classList.remove("error"), 500);
-        document.getElementById("errorMsg").innerText = "Correo o contraseña incorrectos";
+    const value = passwordInput.value;
+
+    updateRule("rule-length", value.length >= 12);
+    updateRule("rule-upper", /[A-Z]/.test(value));
+    updateRule("rule-lower", /[a-z]/.test(value));
+    updateRule("rule-symbol", /[\W_]/.test(value));
+});
+
+function updateRule(id, valid) {
+    const el = document.getElementById(id);
+    const text = el.innerText.slice(2);
+
+    el.innerText = (valid ? "✔ " : "X ") + text;
+    el.style.color = valid ? "green" : "red";
+}
+
+// VALIDAR PASSWORD
+function validarPassword(pass) {
+    return pass.length >= 12 &&
+        /[A-Z]/.test(pass) &&
+        /[a-z]/.test(pass) &&
+        /[\W_]/.test(pass);
+}
+
+// REGISTER
+async function register() {
+
+    const nombre = document.getElementById("nombre").value;
+    const correo = document.getElementById("correoReg").value;
+    const telefono = document.getElementById("telefono").value;
+    const fechaNacimiento = document.getElementById("fecha").value;
+    const password = document.getElementById("newPass").value;
+    const confirmPass = document.getElementById("confirmPass").value;
+
+    if (!nombre || !correo || !telefono || !fechaNacimiento || !password || !confirmPass) {
+        alert("Llena todos los campos");
+        return;
+    }
+
+    if (!validarPassword(password)) {
+        alert("La contraseña no cumple los requisitos");
+        return;
+    }
+
+    if (password !== confirmPass) {
+        alert("Las contraseñas no coinciden");
+        return;
+    }
+
+    try {
+        const res = await fetch("http://localhost:3000/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                nombre,
+                correo,
+                telefono,
+                fechaNacimiento,
+                password
+            })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+            alert("Cuenta creada correctamente");
+            closeRegister();
+        } else {
+            alert(data.error);
+        }
+
+    } catch (err) {
+        console.log(err);
+        alert("Error de conexión");
     }
 }
 
+// LOGIN
 async function login() {
-    let correo = document.getElementById("correo").value;
-    let password = document.getElementById("pass").value;
 
-    let res = await fetch("http://localhost:3000/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ correo, password })
-    });
+    const correo = document.getElementById("correo").value;
+    const password = document.getElementById("pass").value;
 
-    let data = await res.json();
+    try {
+        const res = await fetch("http://localhost:3000/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ correo, password })
+        });
 
-    if (data.success) {
-        localStorage.setItem("loggedUser", data.user);
-        window.location.href = "index.html";
-    } else {
-        document.getElementById("errorMsg").innerText = "Correo o contraseña incorrectos";
+        const data = await res.json();
+
+        if (data.success) {
+
+            localStorage.setItem("usuario", JSON.stringify(data.user));
+            window.location.href = "index.html";
+
+        } else {
+            document.getElementById("errorMsg").innerText = data.error;
+        }
+
+    } catch (err) {
+        console.log(err);
+        alert("Error de conexión");
     }
 }
 

@@ -1,31 +1,29 @@
 const designArea = document.getElementById("designArea");
 const imageUpload = document.getElementById("imageUpload");
-const shirtColorLayer = document.getElementById("shirtColorLayer");
 
 let selectedElement = null;
 
-// funcion para que el coor blanco y negro no cubra por completo la imagen 
+// CAMBIAR COLOR DE PLAYERAS Y BUSCA EN LA CARPTA IMG LA IMAGEN QUE DESCARGUES
 function changeShirtColor(color) {
 
-    if (color === "white") {
-        shirtColorLayer.style.background = "white";
-        shirtColorLayer.style.mixBlendMode = "normal";
-        shirtColorLayer.style.opacity = "0";
-    }
-    else if (color === "black") {
-        shirtColorLayer.style.background = "black";
-        shirtColorLayer.style.mixBlendMode = "normal";
-        shirtColorLayer.style.opacity = "0.8";
-    }
-    else {
-        shirtColorLayer.style.background = color;
-        shirtColorLayer.style.mixBlendMode = "multiply";
-        shirtColorLayer.style.opacity = "0.75";
-    }
+    const img = document.getElementById("shirtBase");
+
+    let ruta = `img/playera-${color}.png`;
+
+    console.log("Buscando:", ruta);
+
+    img.src = ruta;
+
+    // Si no existe la imagen, vuelve a blanca
+    img.onerror = function () {
+        console.log("No se encontró imagen, usando blanca");
+        img.src = "img/frente.png";
+    };
 }
 
-// TEXTO
+//  AGREGAR TEXTO
 function addText() {
+
     const value = document.getElementById("textInput").value;
     if (!value.trim()) return;
 
@@ -33,18 +31,10 @@ function addText() {
     box.classList.add("design-element");
     box.style.top = "50px";
     box.style.left = "50px";
-    box.style.width = "150px";
-    box.style.height = "60px";
 
     const text = document.createElement("div");
     text.innerText = value;
-    text.style.width = "100%";
-    text.style.height = "100%";
-    text.style.display = "flex";
-    text.style.alignItems = "center";
-    text.style.justifyContent = "center";
-    text.style.fontSize = "30px";
-    text.style.fontFamily = document.getElementById("fontFamily").value;
+    text.style.fontSize = "25px";
     text.style.color = document.getElementById("textColor").value;
     text.style.pointerEvents = "none";
 
@@ -52,65 +42,61 @@ function addText() {
     designArea.appendChild(box);
     addEvents(box);
 
-    box.addEventListener("dblclick", () => {
-        const nuevo = prompt("Editar texto:", text.innerText);
-        if (nuevo !== null) text.innerText = nuevo;
-    });
-
     document.getElementById("textInput").value = "";
 }
 
-// IMAGEN
+// SUBIR IMAGEN
 imageUpload.addEventListener("change", function () {
+
     const file = this.files[0];
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = e => {
+
+    reader.onload = function (e) {
+
         const box = document.createElement("div");
         box.classList.add("design-element");
         box.style.top = "60px";
         box.style.left = "60px";
-        box.style.width = "120px";
 
         const img = document.createElement("img");
         img.src = e.target.result;
-        img.style.width = "100%";
+        img.style.width = "120px";
 
         box.appendChild(img);
         designArea.appendChild(box);
         addEvents(box);
     };
+
     reader.readAsDataURL(file);
 });
 
-// funcion para que puedas mover el texto o imagen donde tu quieras
+//  MOVER ELEMENTOS
 function addEvents(element) {
 
-    element.addEventListener("click", e => {
+    element.addEventListener("click", function (e) {
         e.stopPropagation();
 
-        if (selectedElement) selectedElement.classList.remove("selected");
+        if (selectedElement) {
+            selectedElement.classList.remove("selected");
+        }
+
         selectedElement = element;
         element.classList.add("selected");
-
-        element.style.zIndex = Date.now();
     });
 
     let offsetX, offsetY;
 
-    element.addEventListener("pointerdown", e => {
+    element.addEventListener("pointerdown", function (e) {
 
         const rect = element.getBoundingClientRect();
         offsetX = e.clientX - rect.left;
         offsetY = e.clientY - rect.top;
 
         function move(e) {
-            let x = e.clientX - offsetX;
-            let y = e.clientY - offsetY;
-
-            element.style.left = x + "px";
-            element.style.top = y + "px";
+            element.style.left = (e.clientX - offsetX) + "px";
+            element.style.top = (e.clientY - offsetY) + "px";
         }
 
         function stop() {
@@ -124,28 +110,33 @@ function addEvents(element) {
 }
 
 // DESELECCIONAR
-document.addEventListener("click", () => {
-    if (selectedElement) selectedElement.classList.remove("selected");
+document.addEventListener("click", function () {
+    if (selectedElement) {
+        selectedElement.classList.remove("selected");
+    }
     selectedElement = null;
 });
 
 // ELIMINAR
 function deleteSelected() {
-    if (selectedElement) selectedElement.remove();
-    selectedElement = null;
+    if (selectedElement) {
+        selectedElement.remove();
+        selectedElement = null;
+    }
 }
 
-// GUARDAR
+// GUARDAR DISEÑO
 function guardarDiseno() {
+
     const shirt = document.getElementById("shirt");
 
     html2canvas(shirt, {
-        useCORS: true,
         backgroundColor: "#ffffff",
         scale: 2
-    }).then(canvas => {
+    }).then(function (canvas) {
+
         const link = document.createElement("a");
-        link.download = "mi-diseno-wearyourway.png";
+        link.download = "mi-diseno.png";
         link.href = canvas.toDataURL("image/png");
         link.click();
     });
