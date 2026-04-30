@@ -6,30 +6,26 @@
     <title>Wear Your Way - Diseñador</title>
 
     <link rel="stylesheet" href="diseño.css">
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Anton&family=Pacifico&family=Poppins&family=Oswald&display=swap"
-        rel="stylesheet">
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 
 <body>
 
+    <!-- 🔙 BOTÓN REGRESAR -->
     <div class="top-bar">
         <a href="index.html" class="home-btn">⬅ Inicio</a>
     </div>
 
     <div class="container">
-        <h1>Wear Your Way - Diseña tu playera</h1>
+        <h1>Diseña tu playera</h1>
 
         <div class="editor">
 
             <div class="preview">
                 <div class="shirt" id="shirt">
 
-                    <div class="shirt-color" id="shirtColorLayer"></div>
-                    <img src="img/playeras_prueba.png" class="shirt-img">
+                    <!-- PLAYERA -->
+                    <img src="img/playera-blanca.png" class="shirt-img" id="shirtBase">
 
                     <div id="designArea"></div>
 
@@ -40,37 +36,23 @@
 
                 <h3>Color Playera</h3>
                 <div class="color-picker">
-                    <div class="color-box" style="background:red" onclick="changeShirtColor('red')"></div>
-                    <div class="color-box" style="background:green" onclick="changeShirtColor('green')"></div>
-                    <div class="color-box" style="background:black" onclick="changeShirtColor('black')"></div>
-                    <div class="color-box" style="background:white; border:1px solid #ccc"
-                        onclick="changeShirtColor('white')"></div>
-                    <div class="color-box" style="background:blue" onclick="changeShirtColor('blue')"></div>
-                    <div class="color-box" style="background:yellow" onclick="changeShirtColor('yellow')"></div>
+                    <div class="color-box" style="background:red" onclick="changeShirtColor('roja')"></div>
+                    <div class="color-box" style="background:black" onclick="changeShirtColor('negra')"></div>
+                    <div class="color-box" style="background:white; border:1px solid #ccc" onclick="changeShirtColor('blanca')"></div>
+                    <div class="color-box" style="background:blue" onclick="changeShirtColor('azul')"></div>
+                    <div class="color-box" style="background: green;" onclick="changeShirtColor('verde')"></div>
                 </div>
 
                 <h3>Texto</h3>
-                <div class="text-row">
-                    <input type="text" id="textInput" placeholder="Escribe tu texto">
-                    <select id="fontFamily">
-                        <option value="Poppins">Poppins</option>
-                        <option value="Anton">Anton</option>
-                        <option value="Pacifico">Pacifico</option>
-                        <option value="Oswald">Oswald</option>
-                    </select>
-                </div>
-
+                <input type="text" id="textInput">
                 <input type="color" id="textColor">
                 <button onclick="addText()">Agregar Texto</button>
 
                 <h3>Imagen</h3>
-                <input type="file" id="imageUpload" accept="image/*">
+                <input type="file" id="imageUpload">
 
                 <button onclick="deleteSelected()">Eliminar seleccionado</button>
-
-                <button class="btn-guardar" onclick="guardarDiseno()">
-                     Guardar mi diseño 🪡
-                </button>
+                <button onclick="guardarDiseno()">Guardar</button>
 
             </div>
 

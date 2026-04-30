@@ -8,169 +8,50 @@
 </head>
 
 <body>
+
     <div class="login-box">
         <div class="logo">Wear Your Way</div>
-        <h2>Iniciar Sesion</h2>
+        <h2>Iniciar Sesión</h2>
 
         <input type="text" id="correo" placeholder="Correo o usuario">
-        <input type="password" id="pass" placeholder="Contrasena">
+        <input type="password" id="pass" placeholder="Contraseña">
         <button onclick="login()">Entrar</button>
         <p id="errorMsg"></p>
 
         <div class="create-account">
-            No tienes cuenta?
+            ¿No tienes cuenta?
             <a href="javascript:void(0)" onclick="mostrarRegistro()">Crear usuario</a>
         </div>
     </div>
 
-    <div id="registerBox" class="register-box" style="display: none;">
+    <!-- REGISTRO -->
+    <div id="registerBox" class="register-box">
+
         <h3>Crear cuenta</h3>
 
         <input id="nombre" placeholder="Nombre completo">
-        <input id="correoReg" placeholder="Correo electronico">
-        <input id="telefono" placeholder="Telefono">
+        <input id="correoReg" placeholder="Correo electrónico">
+        <input id="telefono" placeholder="Teléfono">
         <input id="fecha" type="date">
-        <input id="newPass" type="password" placeholder="Contrasena">
+        <input id="newPass" type="password" placeholder="Contraseña">
 
+        <!-- 🔥 REGLAS -->
         <div class="password-rules">
-            <p>La contrasena debe tener:</p>
+            <p>La contraseña debe tener:</p>
             <div id="rule-length" class="rule">X 12+ caracteres</div>
-            <div id="rule-upper" class="rule">X Una mayuscula</div>
-            <div id="rule-lower" class="rule">X Una minuscula</div>
-            <div id="rule-symbol" class="rule">X Un simbolo (!@#$%^&*)</div>
+            <div id="rule-upper" class="rule">X Una mayúscula</div>
+            <div id="rule-lower" class="rule">X Una minúscula</div>
+            <div id="rule-symbol" class="rule">X Un símbolo (!@#$%)</div>
         </div>
 
-        <input id="confirmPass" type="password" placeholder="Confirmar contrasena">
+        <input id="confirmPass" type="password" placeholder="Confirmar contraseña">
 
         <button onclick="register()">Crear cuenta</button>
         <button onclick="closeRegister()">Cancelar</button>
+
     </div>
 
-    <script>
-        // MOSTRAR / OCULTAR REGISTRO
-        function mostrarRegistro() {
-            document.getElementById("registerBox").style.display = "block";
-        }
-
-        function closeRegister() {
-            document.getElementById("registerBox").style.display = "none";
-        }
-
-        // VALIDACION VISUAL CONTRASEÑA
-        const passwordInput = document.getElementById("newPass");
-
-        passwordInput.addEventListener("input", function () {
-            const value = passwordInput.value;
-
-            updateRule("rule-length", value.length >= 12);
-            updateRule("rule-upper", /[A-Z]/.test(value));
-            updateRule("rule-lower", /[a-z]/.test(value));
-            updateRule("rule-symbol", /[\W_]/.test(value));
-        });
-
-        function updateRule(id, valid) {
-            const element = document.getElementById(id);
-            const text = element.innerText.slice(2);
-
-            element.innerText = (valid ? "✔ " : "X ") + text;
-            element.style.color = valid ? "green" : "red";
-        }
-
-        // VALIDAR CONTRASEÑA
-        function validarPassword(pass) {
-            return pass.length >= 12 &&
-                /[A-Z]/.test(pass) &&
-                /[a-z]/.test(pass) &&
-                /[\W_]/.test(pass);
-        }
-
-        // REGISTER
-        function register() {
-            const nombre = document.getElementById("nombre").value;
-            const correo = document.getElementById("correoReg").value;
-            const telefono = document.getElementById("telefono").value;
-            const fechaNacimiento = document.getElementById("fecha").value;
-            const password = document.getElementById("newPass").value;
-            const confirmPass = document.getElementById("confirmPass").value;
-
-            if (!nombre || !correo || !telefono || !fechaNacimiento || !password || !confirmPass) {
-                alert("Llena todos los campos");
-                return;
-            }
-
-            if (!validarPassword(password)) {
-                alert("La contraseña no cumple los requisitos");
-                return;
-            }
-
-            if (password !== confirmPass) {
-                alert("Las contraseñas no coinciden");
-                return;
-            }
-
-            fetch("http://localhost:3000/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    nombre,
-                    correo,
-                    telefono,
-                    fechaNacimiento,
-                    password
-                })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    alert("Cuenta creada correctamente");
-                    closeRegister();
-                } else {
-                    alert(data.error);
-                }
-            })
-            .catch(err => {
-                console.log(err);
-                alert("Error de conexión");
-            });
-        }
-
-        // LOGIN
-        function login() {
-            const correo = document.getElementById("correo").value;
-            const password = document.getElementById("pass").value;
-
-            fetch("http://localhost:3000/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    correo,
-                    password
-                })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-
-                    // GUARDAR USUARIO
-                    localStorage.setItem("usuario", data.user);
-
-                    // REDIRIGIR
-                    window.location.href = "index.html";
-
-                } else {
-                    document.getElementById("errorMsg").innerText = data.error;
-                }
-            })
-            .catch(err => {
-                console.log(err);
-                alert("Error de conexión");
-            });
-        }
-    </script>
-
+    <script src="login.js"></script>
 </body>
+
 </html>

@@ -7,17 +7,17 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 
-<!-- CARRITO -->
-<div class="cart" id="cart">
-    <div class="cart-content">
-        <h2>Tu carrito</h2>
-        <div id="cart-items"></div>
-        <h3>Total: $<span id="cart-total">0</span> MXN</h3>
-        <button id="close-cart">Cerrar</button>
-    </div>
-</div>
-
 <body>
+
+    <!-- CARRITO -->
+    <div class="cart" id="cart">
+        <div class="cart-content">
+            <h2>Tu carrito</h2>
+            <div id="cart-items"></div>
+            <h3>Total: $<span id="cart-total">0</span> MXN</h3>
+            <button id="close-cart">Cerrar</button>
+        </div>
+    </div>
 
     <!-- NAVBAR -->
     <header>
@@ -35,7 +35,6 @@
             <a href="diseño.html">Diseñador Online</a>
             <a href="#playera">Playeras</a>
             <a href="#">Accesorios</a>
-
 
             <a href="login.html" id="navSesion">Iniciar Sesión</a>
         </nav>
@@ -91,7 +90,7 @@
         </div>
     </section>
 
-    <!-- MÁS PRODUCTOS (NUEVO) -->
+    <!-- MÁS PRODUCTOS -->
     <section class="more-products">
         <h2>Más productos</h2>
 
@@ -104,7 +103,7 @@
 
             <div class="card">
                 <img src="img/diseño6.jpeg">
-                <h3>Akaza llega </h3>
+                <h3>Akaza llega</h3>
                 <p>$310 MXN</p>
             </div>
 
@@ -116,7 +115,7 @@
 
             <div class="card">
                 <img src="img/temerario.png">
-                <h3>perrito temerario </h3>
+                <h3>Perrito temerario</h3>
                 <p>$290 MXN</p>
             </div>
         </div>
@@ -141,11 +140,13 @@
 
     <script src="script.js"></script>
 
-    <!-- SCRIPT DE SESIÓN -->
+    <!-- 🔥 SCRIPT CORREGIDO -->
     <script>
-        const usuario = localStorage.getItem("usuario");
         const navSesion = document.getElementById("navSesion");
         const welcomeUser = document.getElementById("welcomeUser");
+
+        // 🔥 AQUÍ ESTÁ LA CORRECCIÓN
+        const usuario = JSON.parse(localStorage.getItem("usuario"));
 
         if (!usuario) {
             // NO LOGUEADO
@@ -154,7 +155,7 @@
             welcomeUser.innerText = "";
         } else {
             // LOGUEADO
-            welcomeUser.innerText = "👤 " + usuario;
+            welcomeUser.innerText = "👤 " + usuario.nombre;
 
             navSesion.innerText = "Cerrar sesión";
             navSesion.href = "#";
@@ -164,13 +165,8 @@
             };
         }
 
-
         function logout() {
             localStorage.removeItem("usuario");
-
-            // limpia tu nombre de la pantalla
-            welcomeUser.innerText = "";
-
             window.location.href = "index.html";
         }
     </script>
@@ -179,7 +175,6 @@
         <p>© 2026 Wear Your Way</p>
         <p>Diseña tu estilo. Viste tu identidad.</p>
     </footer>
-
 
 </body>
 

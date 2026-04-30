@@ -1,15 +1,31 @@
 body {
     margin: 0;
-    font-family: Poppins;
+    font-family: Poppins, sans-serif;
     background: linear-gradient(135deg, #111, #222);
     color: white;
 }
 
+/* 🔙 BARRA SUPERIOR */
+.top-bar {
+    background: black;
+    padding: 15px;
+}
+
+.home-btn {
+    background: red;
+    padding: 8px 15px;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+}
+
+/* CONTENEDOR GENERAL */
 .container {
     padding: 30px;
     text-align: center;
 }
 
+/* EDITOR */
 .editor {
     display: flex;
     justify-content: center;
@@ -17,6 +33,7 @@ body {
     flex-wrap: wrap;
 }
 
+/* PREVIEW PLAYERA */
 .preview {
     width: 400px;
 }
@@ -24,30 +41,22 @@ body {
 .shirt {
     position: relative;
     width: 100%;
-    background: white;
 }
 
 .shirt-img {
     width: 100%;
 }
 
-.shirt-color {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
-}
-
+/* ÁREA DE DISEÑO */
 #designArea {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    overflow: visible;
 }
 
+/* CONTROLES */
 .controls {
     background: #1c1c1c;
     padding: 25px;
@@ -58,14 +67,14 @@ body {
     gap: 15px;
 }
 
-.controls input,
-.controls select {
+.controls input {
     width: 100%;
     padding: 10px;
     border-radius: 6px;
     border: none;
 }
 
+/* BOTONES */
 button {
     padding: 10px;
     background: #ff3c3c;
@@ -75,19 +84,18 @@ button {
     cursor: pointer;
 }
 
+/* ELEMENTOS EN PLAYERA */
 .design-element {
     position: absolute;
     cursor: move;
-    resize: both;
-    overflow: hidden;
-    min-width: 60px;
-    min-height: 40px;
 }
 
+/* SELECCIONADO */
 .selected {
     outline: 2px dashed #00c3ff;
 }
 
+/* COLORES */
 .color-picker {
     display: flex;
     gap: 10px;
@@ -101,20 +109,8 @@ button {
     cursor: pointer;
 }
 
+/* TEXTO INPUT */
 .text-row {
     display: flex;
     gap: 10px;
-}
-
-.top-bar {
-    background: black;
-    padding: 15px;
-}
-
-.home-btn {
-    background: red;
-    padding: 8px 15px;
-    color: white;
-    text-decoration: none;
-    border-radius: 6px;
 }
