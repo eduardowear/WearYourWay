@@ -8,7 +8,7 @@ function closeRegister() {
     document.getElementById("registerBox").style.display = "none";
 }
 
-// 🔥 VALIDACIÓN VISUAL
+//  Validacion de contraseña
 const passwordInput = document.getElementById("newPass");
 
 passwordInput.addEventListener("input", function () {

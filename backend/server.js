@@ -11,7 +11,7 @@ app.use(express.json());
 
 connectDB();
 
-// 🔐 REGISTER
+// REGISTER
 app.post("/register", async (req, res) => {
 
     const { nombre, correo, telefono, fechaNacimiento, password } = req.body;
@@ -45,7 +45,7 @@ app.post("/register", async (req, res) => {
     }
 });
 
-// 🔑 LOGIN
+// LOGIN
 app.post("/login", async (req, res) => {
 
     const { correo, password } = req.body;

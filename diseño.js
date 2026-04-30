@@ -3,7 +3,7 @@ const imageUpload = document.getElementById("imageUpload");
 
 let selectedElement = null;
 
-// 🔥 CAMBIAR COLOR (USA IMÁGENES)
+// CAMBIAR COLOR DE PLAYERAS Y BUSCA EN LA CARPTA IMG LA IMAGEN QUE DESCARGUES
 function changeShirtColor(color) {
 
     const img = document.getElementById("shirtBase");
@@ -21,7 +21,7 @@ function changeShirtColor(color) {
     };
 }
 
-// 📝 AGREGAR TEXTO
+//  AGREGAR TEXTO
 function addText() {
 
     const value = document.getElementById("textInput").value;
@@ -45,7 +45,7 @@ function addText() {
     document.getElementById("textInput").value = "";
 }
 
-// 🖼️ SUBIR IMAGEN
+// SUBIR IMAGEN
 imageUpload.addEventListener("change", function () {
 
     const file = this.files[0];
@@ -72,7 +72,7 @@ imageUpload.addEventListener("change", function () {
     reader.readAsDataURL(file);
 });
 
-// 🖱️ MOVER ELEMENTOS
+//  MOVER ELEMENTOS
 function addEvents(element) {
 
     element.addEventListener("click", function (e) {
@@ -109,7 +109,7 @@ function addEvents(element) {
     });
 }
 
-// ❌ DESELECCIONAR
+// DESELECCIONAR
 document.addEventListener("click", function () {
     if (selectedElement) {
         selectedElement.classList.remove("selected");
@@ -117,7 +117,7 @@ document.addEventListener("click", function () {
     selectedElement = null;
 });
 
-// 🗑️ ELIMINAR
+// ELIMINAR
 function deleteSelected() {
     if (selectedElement) {
         selectedElement.remove();
@@ -125,7 +125,7 @@ function deleteSelected() {
     }
 }
 
-// 💾 GUARDAR DISEÑO
+// GUARDAR DISEÑO
 function guardarDiseno() {
 
     const shirt = document.getElementById("shirt");
