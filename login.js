@@ -1,3 +1,4 @@
+
 // MOSTRAR / OCULTAR REGISTRO
 function mostrarRegistro() {
     document.getElementById("registerBox").style.display = "block";
@@ -118,5 +119,3 @@ async function login() {
         alert("Error de conexión");
     }
 }
-
-
