@@ -8,7 +8,7 @@ function closeRegister() {
     document.getElementById("registerBox").style.display = "none";
 }
 
-//  Validacion de contraseña
+// ================= VALIDACION DE CONTRASEÑA =================
 const passwordInput = document.getElementById("newPass");
 
 passwordInput.addEventListener("input", function () {
@@ -37,7 +37,7 @@ function validarPassword(pass) {
         /[\W_]/.test(pass);
 }
 
-// REGISTER
+// ================= REGISTER =================
 async function register() {
 
     const nombre = document.getElementById("nombre").value;
@@ -90,11 +90,16 @@ async function register() {
     }
 }
 
-// LOGIN
+// ================= LOGIN =================
 async function login() {
 
     const correo = document.getElementById("correo").value;
     const password = document.getElementById("pass").value;
+
+    if (!correo || !password) {
+        document.getElementById("errorMsg").innerText = "Llena todos los campos";
+        return;
+    }
 
     try {
         const res = await fetch("http://localhost:3000/login", {
@@ -107,7 +112,13 @@ async function login() {
 
         if (data.success) {
 
+            
+            localStorage.setItem("loggedUser", data.user.nombre);
+            localStorage.setItem("correoUsuario", data.user.correo);
+
+            // (opcional)
             localStorage.setItem("usuario", JSON.stringify(data.user));
+
             window.location.href = "index.html";
 
         } else {

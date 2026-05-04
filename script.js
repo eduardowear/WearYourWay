@@ -9,6 +9,7 @@ const modalPrice = document.getElementById("modal-price");
 
 const cardsElements = document.querySelectorAll(".card");
 
+// ================= MODAL =================
 cardsElements.forEach(card => {
     card.addEventListener("click", () => {
         const title = card.querySelector("h3").innerText;
@@ -31,7 +32,7 @@ window.addEventListener("click", (e) => {
     }
 });
 
-// Parte del carrusel
+// ================= CARRUSEL =================
 rightBtn.addEventListener("click", () => {
     cards.scrollLeft += 300;
 });
@@ -40,8 +41,7 @@ leftBtn.addEventListener("click", () => {
     cards.scrollLeft -= 300;
 });
 
-
-// Carrito de compras
+// ================= CARRITO =================
 const cartIcon = document.getElementById("cart-icon");
 const cart = document.getElementById("cart");
 const closeCart = document.getElementById("close-cart");
@@ -49,26 +49,25 @@ const cartItems = document.getElementById("cart-items");
 const cartCount = document.getElementById("cart-count");
 const cartTotal = document.getElementById("cart-total");
 
-
 let total = 0;
 let count = 0;
 
-// Abre el carrito
+// Abrir carrito
 cartIcon.addEventListener("click", () => {
     cart.classList.add("active");
 });
 
-// Cierra el carrito
+// Cerrar carrito
 closeCart.addEventListener("click", () => {
     cart.classList.remove("active");
 });
 
-// Botón comprar del modal
+// ================= AGREGAR AL CARRITO =================
 const buyButton = document.querySelector(".modal-content .btn-primary");
 
 buyButton.addEventListener("click", () => {
-    const title = document.getElementById("modal-title").innerText;
-    const priceText = document.getElementById("modal-price").innerText;
+    const title = modalTitle.innerText;
+    const priceText = modalPrice.innerText;
     const price = parseInt(priceText.replace("$", ""));
 
     const item = document.createElement("div");
@@ -81,18 +80,18 @@ buyButton.addEventListener("click", () => {
     removeBtn.innerText = "❌";
     removeBtn.style.marginLeft = "10px";
 
-    //  para eliminar el producto
+    // Eliminar producto
     removeBtn.addEventListener("click", () => {
         cartItems.removeChild(item);
         total -= price;
         count--;
+
         cartTotal.innerText = total;
         cartCount.innerText = count;
     });
 
     item.appendChild(itemText);
     item.appendChild(removeBtn);
-
     cartItems.appendChild(item);
 
     total += price;
@@ -104,23 +103,23 @@ buyButton.addEventListener("click", () => {
     modal.style.display = "none";
 });
 
-
-// Botón para vaciar carrito
+// ================= VACIAR CARRITO =================
 const clearCartBtn = document.createElement("button");
 clearCartBtn.innerText = "Vaciar carrito";
 clearCartBtn.style.marginTop = "10px";
+
 clearCartBtn.addEventListener("click", () => {
     cartItems.innerHTML = "";
     total = 0;
     count = 0;
+
     cartTotal.innerText = total;
     cartCount.innerText = count;
 });
+
 cart.appendChild(clearCartBtn);
 
-
-
-// Botón comprar dentro del carrito
+// ================= COMPRAR =================
 const purchaseBtn = document.createElement("button");
 purchaseBtn.innerText = "Comprar";
 purchaseBtn.style.marginTop = "10px";
@@ -133,45 +132,43 @@ purchaseBtn.addEventListener("click", () => {
         return;
     }
 
-    // Guardar pedido básico en localStorage
+    const correo = localStorage.getItem("correoUsuario");
+
+    if (!correo) {
+        alert("Debes iniciar sesión primero");
+        window.location.href = "login.html";
+        return;
+    }
+
     const pedido = {
-        productos: Array.from(cartItems.querySelectorAll(".cart-item span")).map(el => el.innerText),
-        subtotal: total
+        productos: Array.from(cartItems.querySelectorAll(".cart-item span"))
+            .map(el => el.innerText),
+        subtotal: total,
+        correo: correo 
     };
 
     localStorage.setItem("pedido", JSON.stringify(pedido));
 
-    // Redirigir primero a pago.html
     window.location.href = "pago.html";
 });
 
-
 cart.appendChild(purchaseBtn);
 
-
-
-
-
-
-// Mostrar usuario arriba
+// ================= USUARIO =================
 const user = localStorage.getItem("loggedUser");
-
-if (user) {
-    const welcome = document.getElementById("welcomeUser");
-    welcome.innerText = " | Hola " + user + " 👋";
-}
 
 const welcome = document.getElementById("welcomeUser");
 const loginBtn = document.getElementById("loginBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 
 if (user) {
-    welcome.innerText = "Hola " + user;
-    loginBtn.style.display = "none";
-    logoutBtn.style.display = "inline-block";
+    if (welcome) welcome.innerText = "Hola " + user + " 👋";
+    if (loginBtn) loginBtn.style.display = "none";
+    if (logoutBtn) logoutBtn.style.display = "inline-block";
 }
 
 function logout() {
     localStorage.removeItem("loggedUser");
+    localStorage.removeItem("correoUsuario"); 
     location.reload();
 }

@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <title>Confirmación de Pago</title>
   <link rel="stylesheet" href="checkout.css">
 </head>
+
 <body>
   <div class="checkout-box">
     <h2>Confirmación de pago</h2>
-    <p class="folio">Folio: <span id="folio">WYW-692932</span></p>
+    <div class="folio">Folio: <span id="folio"></span></div>
 
     <div class="section">
       <h3>Datos del cliente</h3>
@@ -27,7 +29,7 @@
     <div class="section">
       <h3>Productos</h3>
       <p><span id="producto"></span> · Cantidad <span id="cantidad"></span></p>
-      <p><strong>Precio:</strong> $<span id="subtotal"></span></p>
+      <p><strong>Precio:</strong> $<span id="precioProductos"></span></p>
     </div>
 
     <div class="section resumen">
@@ -37,12 +39,17 @@
       <p><strong>Total pagado:</strong> $<span id="total"></span></p>
     </div>
 
+
     <div class="buttons">
       <button onclick="window.print()">Imprimir</button>
       <button onclick="window.location.href='index.html'">Cerrar</button>
     </div>
   </div>
 
+
+
+
   <script src="checkout.js"></script>
 </body>
+
 </html>

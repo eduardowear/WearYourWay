@@ -7,27 +7,24 @@ function guardarPago() {
   const cp = document.getElementById("cp").value;
 
   if (!tarjeta || !expira || !cvv || !direccion || !ciudad || !cp) {
-    alert("Completa todos los campos de pago y dirección");
+    alert("Completa todos los campos");
     return;
   }
 
-  // Recuperar pedido existente
-  const pedido = JSON.parse(localStorage.getItem("pedido")) || { productos: [], subtotal: 0 };
+  const pedido = JSON.parse(localStorage.getItem("pedido"));
 
-  // Guardar datos de pago y envío
-  pedido.tarjeta = `**** **** **** ${tarjeta.slice(-4)} (expira ${expira})`;
   pedido.direccion = `${direccion}, ${ciudad}, CP ${cp}`;
   pedido.envio = 99;
   pedido.total = pedido.subtotal + 99;
+  pedido.metodo = "Tarjeta"; // 🔥 NUEVO
 
   localStorage.setItem("pedido", JSON.stringify(pedido));
 
-  // Redirigir a la confirmación
   window.location.href = "checkout.html";
 }
 
-// Mostrar resumen en pago.html
-const pedido = JSON.parse(localStorage.getItem("pedido")) || { productos:["Playera personalizada"], subtotal:299 };
+
+const pedido = JSON.parse(localStorage.getItem("pedido"));
 document.getElementById("productos").innerText = pedido.productos.join(", ");
 document.getElementById("subtotal").innerText = pedido.subtotal;
 document.getElementById("total").innerText = pedido.subtotal + 99;
