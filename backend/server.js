@@ -11,13 +11,11 @@ app.use(express.json());
 
 connectDB();
 
-// REGISTER
+// ================= REGISTER =================
 app.post("/register", async (req, res) => {
-
     const { nombre, correo, telefono, fechaNacimiento, password } = req.body;
 
     try {
-
         if (!nombre || !correo || !telefono || !fechaNacimiento || !password) {
             return res.json({ success: false, error: "Campos vacíos" });
         }
@@ -45,13 +43,11 @@ app.post("/register", async (req, res) => {
     }
 });
 
-// LOGIN
+// ================= LOGIN =================
 app.post("/login", async (req, res) => {
-
     const { correo, password } = req.body;
 
     try {
-
         const result = await sql.query`
             SELECT * FROM Usuarios WHERE Correo = ${correo}
         `;
@@ -82,7 +78,49 @@ app.post("/login", async (req, res) => {
     }
 });
 
+// ================= GET USER =================
+app.post("/getUserData", async (req, res) => {
+    const { correo } = req.body;
+
+    try {
+        const result = await sql.query`
+            SELECT Nombre, Correo, Telefono, FechaNacimiento
+            FROM Usuarios
+            WHERE Correo = ${correo}
+        `;
+
+        if (result.recordset.length === 0){
+            return res.json({ success: false, error: "Usuario no encontrado"});
+        }
+
+        res.json({ success: true, user: result.recordset[0] });
+
+    } catch (err) {
+        console.log("❌ GETUSERDATA:", err);
+        res.json({ success: false, error: "Error servidor" });
+    }
+});
+
+// ================= GUARDAR PEDIDO =================
+app.post("/guardarPedido", async (req, res) => {
+    const { correo, productos, subtotal, envio, total, direccion, metodo } = req.body;
+
+    try {
+        const folio = "WYW-" + Math.floor(100000 + Math.random() * 900000);
+
+        await sql.query`
+            INSERT INTO Pedidos (Correo, Productos, Subtotal, Envio, Total, Folio, Direccion, MetodoPago, Fecha)
+            VALUES (${correo}, ${JSON.stringify(productos)}, ${subtotal}, ${envio}, ${total}, ${folio}, ${direccion}, ${metodo}, GETDATE())
+        `;
+
+        res.json({ success: true, folio });
+
+    } catch (err) {
+        console.log("❌ GUARDAR PEDIDO:", err);
+        res.json({ success: false, error: "Error servidor" });
+    }
+});
+
 app.listen(3000, () => {
     console.log("🚀 Servidor en http://localhost:3000");
 });
-
