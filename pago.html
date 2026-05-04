@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Método de Pago - Wear Your Way</title>
+  <link rel="stylesheet" href="pago.css">
+</head>
+<body>
+  <div class="pago-box">
+    <div class="header">
+      <h2 style="color:#333;">🟨 Mercado Pago</h2>
+      <p>Selecciona tu método de pago y dirección de entrega</p>
+    </div>
+
+    <!-- FORMULARIO DE TARJETA -->
+    <div class="section">
+      <h3>💳 Datos de tarjeta</h3>
+      <input type="text" id="numTarjeta" placeholder="Número de tarjeta">
+      <input type="text" id="expira" placeholder="MM/AA">
+      <input type="text" id="cvv" placeholder="CVV">
+    </div>
+
+    <!-- FORMULARIO DE DIRECCIÓN -->
+    <div class="section">
+      <h3>📍 Dirección de entrega</h3>
+      <input type="text" id="direccion" placeholder="Calle, número, colonia">
+      <input type="text" id="ciudad" placeholder="Ciudad">
+      <input type="text" id="cp" placeholder="Código Postal">
+    </div>
+
+    <!-- RESUMEN DE COMPRA -->
+    <div class="section resumen">
+      <h3>🛒 Resumen de compra</h3>
+      <p><strong>Productos:</strong> <span id="productos"></span></p>
+      <p><strong>Subtotal:</strong> $<span id="subtotal"></span></p>
+      <p><strong>Envío:</strong> $99</p>
+      <p><strong>Total:</strong> $<span id="total"></span></p>
+    </div>
+
+    <!-- BOTONES -->
+    <div class="buttons">
+      <button onclick="guardarPago()">Continuar</button>
+    </div>
+  </div>
+
+  <script src="pago.js"></script>
+</body>
+</html>
