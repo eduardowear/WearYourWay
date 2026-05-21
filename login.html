@@ -2,56 +2,184 @@
 <html lang="es">
 
 <head>
+
     <meta charset="UTF-8">
+
     <title>Login - Wear Your Way</title>
+
     <link rel="stylesheet" href="login.css">
+
 </head>
 
 <body>
 
+    <!-- LOGIN -->
+
     <div class="login-box">
-        <div class="logo">Wear Your Way</div>
+
+        <div class="logo">
+            Wear Your Way
+        </div>
+
         <h2>Iniciar Sesión</h2>
 
         <input type="text" id="correo" placeholder="Correo o usuario">
+
         <input type="password" id="pass" placeholder="Contraseña">
-        <button onclick="login()">Entrar</button>
+
+        <button onclick="login()">
+            Entrar
+        </button>
+
         <p id="errorMsg"></p>
 
         <div class="create-account">
+
             ¿No tienes cuenta?
-            <a href="javascript:void(0)" onclick="mostrarRegistro()">Crear usuario</a>
+
+            <a href="javascript:void(0)" onclick="mostrarRegistro()">
+                Crear usuario
+            </a>
+
         </div>
+
     </div>
 
     <!-- REGISTRO -->
+
     <div id="registerBox" class="register-box">
 
         <h3>Crear cuenta</h3>
 
         <input id="nombre" placeholder="Nombre completo">
+
         <input id="correoReg" placeholder="Correo electrónico">
+
         <input id="telefono" placeholder="Teléfono">
+
         <input id="fecha" type="date">
+
         <input id="newPass" type="password" placeholder="Contraseña">
 
-        <!-- REGLAS DE LOGIN -->
+        <!-- REGLAS PASSWORD -->
+
         <div class="password-rules">
+
             <p>La contraseña debe tener:</p>
-            <div id="rule-length" class="rule">X 12+ caracteres</div>
-            <div id="rule-upper" class="rule">X Una mayúscula</div>
-            <div id="rule-lower" class="rule">X Una minúscula</div>
-            <div id="rule-symbol" class="rule">X Un símbolo (!@#$%)</div>
+
+            <div id="rule-length" class="rule">
+                X 12+ caracteres
+            </div>
+
+            <div id="rule-upper" class="rule">
+                X Una mayúscula
+            </div>
+
+            <div id="rule-lower" class="rule">
+                X Una minúscula
+            </div>
+
+            <div id="rule-symbol" class="rule">
+                X Un símbolo (!@#$%)
+            </div>
+
         </div>
 
         <input id="confirmPass" type="password" placeholder="Confirmar contraseña">
 
-        <button onclick="register()">Crear cuenta</button>
-        <button onclick="closeRegister()">Cancelar</button>
+        <!-- TERMINOS -->
+
+        <p class="terms-info">
+            Haz clic en “Términos y Condiciones” y presiona “Aceptar”.
+        </p>
+
+        <div class="terms-box">
+
+            <input type="checkbox" id="termsCheck" disabled>
+
+            <label for="termsCheck">
+
+                He leído y acepto los
+
+                <a href="javascript:void(0)" onclick="openTerms()">
+                    Términos y Condiciones
+                </a>
+
+            </label>
+
+        </div>
+
+        <button onclick="register()">
+            Crear cuenta
+        </button>
+
+        <button onclick="closeRegister()">
+            Cancelar
+        </button>
+
+    </div>
+
+    <!-- MODAL TERMINOS -->
+
+    <div id="termsModal" class="terms-modal">
+
+        <div class="terms-content">
+
+            <h2>Términos y Condiciones</h2>
+
+            <div class="terms-text">
+
+                <p>
+                    Bienvenido a Wear Your Way.
+                </p>
+
+                <p>
+                    Al registrarte aceptas el uso correcto
+                    de la plataforma y sus políticas.
+                </p>
+
+                <p>
+                    El usuario es responsable de su cuenta,
+                    contraseña y contenido personalizado.
+                </p>
+
+                <p>
+                    No se permite contenido ofensivo,
+                    ilegal o protegido por derechos de autor.
+                </p>
+
+                <p>
+                    Wear Your Way puede modificar precios,
+                    productos y políticas sin previo aviso.
+                </p>
+
+                <p>
+                    La información personal será utilizada
+                    únicamente para autenticación,
+                    pedidos y funcionamiento del sistema.
+                </p>
+
+            </div>
+
+            <button onclick="acceptTerms()">
+                Aceptar
+            </button>
+
+        </div>
 
     </div>
 
     <script src="login.js"></script>
+
 </body>
 
+<div class="bg-animation">
+
+    <div class="blob blob1"></div>
+
+    <div class="blob blob2"></div>
+
+    <div class="blob blob3"></div>
+
+</div>
 </html>
