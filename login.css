@@ -322,8 +322,6 @@ button:hover {
     animation: move 15s infinite alternate ease-in-out;
 }
 
-/* BLOB 1 */
-
 .blob1 {
 
     width: 400px;
@@ -334,8 +332,6 @@ button:hover {
     top: -100px;
     left: -100px;
 }
-
-/* BLOB 2 */
 
 .blob2 {
 
@@ -349,8 +345,6 @@ button:hover {
 
     animation-duration: 18s;
 }
-
-/* BLOB 3 */
 
 .blob3 {
 
@@ -367,7 +361,7 @@ button:hover {
     animation-duration: 20s;
 }
 
-/* MOVIMIENTO */
+/* MOVIMIENTO DE LOS CIRCULOS*/
 
 @keyframes move {
 
@@ -382,7 +376,7 @@ button:hover {
     }
 }
 
-/* ================= EFECTO GLASS ================= */
+/* cambio de fondo  */
 
 .login-box,
 .register-box {
@@ -461,9 +455,7 @@ button:hover {
     z-index: 99999;
 }
 
-
 /* LINKS */
-
 .create-account a,
 .terms-box a {
 
